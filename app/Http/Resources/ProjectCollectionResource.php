@@ -19,4 +19,11 @@ class ProjectCollectionResource extends ResourceCollection
             'results' => $this->collection,
         ];
     }
+
+    public function with($resource)
+    {
+        return [
+            'status' => 200
+        ];
+    }
 }

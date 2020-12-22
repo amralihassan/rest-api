@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
 class ProjectResource extends JsonResource
 {
     /**
@@ -19,6 +18,12 @@ class ProjectResource extends JsonResource
             'name'          => $this->name,
             'created_at'    => $this->created_at,
             'updated_at'    => $this->updated_at,
+        ];
+    }
+    public function with($resource)
+    {
+        return [
+            'status' => 200
         ];
     }
 }

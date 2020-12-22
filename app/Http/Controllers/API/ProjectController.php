@@ -19,11 +19,6 @@ class ProjectController extends Controller
     {
         $projects = Project::where('user_id', auth()->user()->id)->get();
         return new ProjectCollectionResource($projects);
-
-        return response()->json([
-            'status_code'   => 200,
-            'projects'      => new ProjectCollectionResource($projects)
-        ]);
     }
 
     /**
@@ -45,16 +40,8 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = Project::where('id',$id)
-        ->where('user_id', auth()->user()->id)
-        ->firstOrFail();
-
-
-
-        return response()->json([
-            'status'    => 200,
-            'project'   => new ProjectResource($project)
-        ]);
+        $project = Project::where('id',$id)->where('user_id', auth()->user()->id)->firstOrFail();
+        return new ProjectResource($project);
     }
 
     /**
