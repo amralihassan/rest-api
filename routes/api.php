@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/authenticate', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('tasks', TaskController::class)->except(['index', 'show']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
