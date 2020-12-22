@@ -37,4 +37,55 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e)
+    {
+        // dd($e);
+        if ($request->is('api*')) {
+            // handle validation errors
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return response([
+                    'status' => 'error',
+                    'error' => $e->errors(),
+                ], 422);
+            }
+
+            // authorization
+            if ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                return response([
+                    'status' => 'error',
+                    'error' => $e->getMessage(),
+                ], 403);
+            }
+
+            // model not found or invalid url
+            if (
+                $e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException ||
+                $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+            ) {
+                return response([
+                    'status' => 'error',
+                    'error' => 'Resources not found',
+                ], 403);
+            }
+
+            // invalid route
+            if ($e instanceof \Symfony\Component\Routing\Exception\RouteNotFoundException) {
+                return response([
+                    'status' => 'error',
+                    'error' => $e->getMessage(),
+                ], 403);
+            }
+
+            // invalid token
+            if ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                return response([
+                    'status' => 'error',
+                    'error' => $e->getMessage(),
+                ], 401);
+            }
+        }
+
+        parent::render($request, $e);
+    }
 }
