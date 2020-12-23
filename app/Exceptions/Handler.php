@@ -84,6 +84,13 @@ class Handler extends ExceptionHandler
                     'error' => $e->getMessage(),
                 ], 401);
             }
+            // Rale limit API
+            if ($e instanceof \Illuminate\Http\Exceptions\ThrottleRequestsException) {
+                return response([
+                    'status' => 'error',
+                    'error' => $e->getMessage(),
+                ], 429);
+            }
         }
 
         parent::render($request, $e);

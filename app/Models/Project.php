@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name'];
+    protected $fillable = ['user_id', 'name','image'];
 
     protected $hidden = ['user_id'];
 
@@ -21,5 +21,13 @@ class Project extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function getImagePathAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/projects/'.$this->image);
+        }
+        return null;
     }
 }
