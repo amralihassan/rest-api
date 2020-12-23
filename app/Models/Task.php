@@ -14,4 +14,9 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function getPriorityAttribute()
+    {
+        return ($this->due_date) ? 'Hight' : 'Low';
+    }
 }

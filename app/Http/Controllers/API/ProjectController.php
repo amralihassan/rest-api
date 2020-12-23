@@ -21,9 +21,14 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private function query()
+    {
+        return Project::with('tasks')->withCount('tasks');
+    }
+
     public function index()
     {
-        $projects = Project::where('user_id', auth()->user()->id)->get();
+        $projects = $this->query()->get();
         return new ProjectCollectionResource($projects);
     }
 
@@ -45,9 +50,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($id)
     {
-        $this->authorize('view',$project);
+        $project = $this->query()->where('id', $id)->firstOrFail();
+        $this->authorize('view', $project);
         return new ProjectResource($project);
     }
 
@@ -60,7 +66,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectRequest $request, Project $project)
     {
-        $this->authorize('update',$project);
+        $this->authorize('update', $project);
         $project->update($request->only('name'));
         return new ProjectResource($project);
     }
@@ -73,7 +79,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $this->authorize('delete',$project);
+        $this->authorize('delete', $project);
         $project->delete();
         return ['status' => 200];
     }
