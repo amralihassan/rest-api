@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 export default {
   data() {
     return {
@@ -122,5 +123,15 @@ export default {
 
     },
   },
+  computed:{
+      ...mapGetters(
+      ['authenticated']
+      )
+  },
+  mounted(){
+      if (this.authenticated) {
+          this.$router.push({name:'dashboard'});
+      }
+  }
 };
 </script>

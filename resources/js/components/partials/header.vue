@@ -10,7 +10,7 @@
                 <router-link :to="{name:'projects'}" class="text-blue-600 hover:text-white">Projects</router-link>
             </li>
             <li class="mr-6" v-if="authenticated">
-                <a href="#" class="text-blue-600 hover:text-white">Logout</a>
+                <a href="#" @click="handleLogout()" class="text-blue-600 hover:text-white">Logout</a>
             </li>
             <!-- no authenticated -->
             <li class="mr-6" v-if="!authenticated">
@@ -24,6 +24,12 @@ import {mapGetters} from 'vuex';
 export default {
     computed:{
         ...mapGetters(['authenticated'])
+    },
+    methods:{
+        async handleLogout(){
+            await this.$store.dispatch('logout');
+            this.$router.push({name:'login'});
+        }
     }
 }
 </script>
