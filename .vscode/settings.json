@@ -1,6 +1,7 @@
 {
     "cSpell.ignoreWords": [
         "signin",
-        "tailwindcss"
+        "tailwindcss",
+        "vuex"
     ]
 }

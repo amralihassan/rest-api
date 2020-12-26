@@ -5,6 +5,7 @@ use App\Http\Controllers\API\FileController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\TaskController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,9 +26,16 @@ Route::post('/authenticate', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('tasks', TaskController::class)->except(['index', 'show']);
-    Route::post('upload',[FileController::class, 'store']);
+    Route::post('upload', [FileController::class, 'store']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth:sanctum')->get('/logout', function (Request $request) {
+    $user = $request->user();
+    $user->tokens()->delete();
+    Auth::guard('web')->logout();
+    return ['status' => 'ok'];
 });
