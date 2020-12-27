@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import signin from './components/auth/signin.vue';
 import dashboard from './components/dashboard/dashboard.vue';
 import projects from './components/projects/projects.vue';
+import projectDetails from './components/projects/project-details.vue';
 
 import store from './store/store.js';
 const router = createRouter({
@@ -30,7 +31,14 @@ const router = createRouter({
             component: projects,
             name: 'projects',
             meta:{requireAuth:true}
-        }
+        },
+        {
+            path: '/projects/:id',
+            component: projectDetails,
+            name: 'project-details',
+            meta:{requireAuth:true},
+            props:true
+        },
     ]
 });
 
