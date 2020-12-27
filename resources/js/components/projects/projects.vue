@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <project-items v-for="project in projects" :key="project.id" :project="project"></project-items>
+                    <project-items v-for="project in projects" :key="project.id" :project="project" @project-deleted="fetchProjects"></project-items>
                 </tbody>
             </table>
         </div>
@@ -34,12 +34,16 @@ export default {
             projects:[]
         }
     },
+    methods:{
+            fetchProjects(){
+                    axios.get('/api/projects').then((res) =>{
+                    this.projects = res.data.data;
+                });
+            }
+    },
     mounted(){
-        axios.get('/api/projects').then((res) =>{
-            this.projects = res.data.data;
+            this.fetchProjects();
+        }
 
-
-        })
-    }
 }
 </script>
